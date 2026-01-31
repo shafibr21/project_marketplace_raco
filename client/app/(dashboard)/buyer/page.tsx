@@ -157,47 +157,6 @@ export default function BuyerDashboard() {
                 </Card>
             </div>
 
-            <div className="grid gap-6 lg:grid-cols-3 mb-8">
-                {/* Spend Analysis Chart (Mock) */}
-                <Card className="lg:col-span-2">
-                    <CardHeader>
-                        <CardTitle>Spend Analysis</CardTitle>
-                        <CardDescription>Your spending over the last 6 months</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="h-[200px] flex items-end justify-between gap-2 pt-4">
-                            {MOCK_SPEND_DATA.map((d) => (
-                                <div key={d.month} className="group relative flex-1 bg-slate-100 rounded-t-sm hover:bg-blue-100 transition-colors flex flex-col justify-end items-center pb-2">
-                                    <motion.div
-                                        initial={{ height: 0 }}
-                                        animate={{ height: `${(d.amount / 4500) * 100}%` }}
-                                        transition={{ duration: 1, ease: 'easeOut' }}
-                                        className="w-full max-w-[40px] bg-blue-500 rounded-t-md opacity-80 group-hover:opacity-100 relative"
-                                    >
-                                        <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                                            ${d.amount}
-                                        </div>
-                                    </motion.div>
-                                    <span className="text-xs text-slate-500 mt-2 font-medium">{d.month}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </CardContent>
-                </Card>
-
-                {/* Recent Activity or Summary */}
-                <Card className="bg-slate-900 text-white border-none">
-                    <CardHeader>
-                        <CardTitle>Quick Actions</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        <Button variant="secondary" className="w-full justify-start" onClick={() => setShowCreate(true)}>Create New Project</Button>
-                        <Button variant="ghost" className="w-full justify-start hover:bg-slate-800 hover:text-white">View Invoices</Button>
-                        <Button variant="ghost" className="w-full justify-start hover:bg-slate-800 hover:text-white">Manage Payment Methods</Button>
-                    </CardContent>
-                </Card>
-            </div>
-
             <h2 className="text-xl font-bold mb-4">Your Projects</h2>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {projects.map((p, i) => (
