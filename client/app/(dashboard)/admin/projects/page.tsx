@@ -117,8 +117,8 @@ const AdminProject = () => {
                       Buyer:
                     </span>
                     <div className="ml-2 text-sm">
-                      <p className="font-medium">{project.buyerId.username}</p>
-                      <p className="text-gray-500">{project.buyerId.email}</p>
+                      <p className="font-medium">{project.buyerId?.username || 'N/A'}</p>
+                      <p className="text-gray-500">{project.buyerId?.email || 'N/A'}</p>
                     </div>
                   </div>
 
