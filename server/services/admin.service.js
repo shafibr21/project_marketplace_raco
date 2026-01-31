@@ -28,9 +28,9 @@ const getPlatformStats = async () => {
         const userCount = await User.countDocuments();
         const projectCount = await Project.countDocuments();
 
-        // Calculate total volume (sum of budgets for assigned projects)
-        const projects = await Project.find({ status: 'assigned' });
-        const totalVolume = projects.reduce((acc, curr) => acc + (curr.budget || 0), 0);
+        // Calculate total volume (sum of budgets for completed projects only)
+        const completedProjects = await Project.find({ status: 'completed' });
+        const totalVolume = completedProjects.reduce((acc, curr) => acc + (curr.budget || 0), 0);
 
         return {
             success: true,

@@ -17,13 +17,36 @@ interface Project {
     status: string;
 }
 
+interface SolverStats {
+    totalEarnings: number;
+    successRate: number;
+    totalProjects: number;
+    availableProjects: number;
+}
+
 export default function SolverDashboard() {
     const [activeTab, setActiveTab] = useState<'browse' | 'my'>('browse');
     const [projects, setProjects] = useState<Project[]>([]);
+    const [stats, setStats] = useState<SolverStats>({
+        totalEarnings: 0,
+        successRate: 0,
+        totalProjects: 0,
+        availableProjects: 0
+    });
 
     useEffect(() => {
         fetchProjects();
+        fetchStats();
     }, [activeTab]);
+
+    const fetchStats = async () => {
+        try {
+            const res = await api.get('/users/solver/stats');
+            setStats(res.data);
+        } catch (err) {
+            console.error('Failed to fetch stats:', err);
+        }
+    };
 
     const fetchProjects = async () => {
         try {
@@ -66,9 +89,9 @@ export default function SolverDashboard() {
                         <Wallet className="w-4 h-4 text-indigo-400" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-3xl font-bold">$12,450</div>
+                        <div className="text-3xl font-bold">${stats.totalEarnings.toLocaleString()}</div>
                         <p className="text-xs text-muted-foreground mt-1 flex items-center">
-                            <ArrowUpRight className="w-3 h-3 text-green-500 mr-1" /> +$1,200 this month
+                            From {stats.totalProjects} completed project{stats.totalProjects !== 1 ? 's' : ''}
                         </p>
                     </CardContent>
                 </Card>
@@ -78,17 +101,17 @@ export default function SolverDashboard() {
                         <CheckCircle className="w-4 h-4 text-emerald-400" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-3xl font-bold">98%</div>
-                        <p className="text-xs text-muted-foreground mt-1">Based on 45 projects</p>
+                        <div className="text-3xl font-bold">{stats.successRate}%</div>
+                        <p className="text-xs text-muted-foreground mt-1">Based on task completion</p>
                     </CardContent>
                 </Card>
                 <Card className="bg-card/50">
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">Available Gigs</CardTitle>
+                        <CardTitle className="text-sm font-medium text-muted-foreground">Available Projects</CardTitle>
                         <Search className="w-4 h-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-3xl font-bold">128</div>
+                        <div className="text-3xl font-bold">{stats.availableProjects}</div>
                         <p className="text-xs text-muted-foreground mt-1">New opportunities today</p>
                     </CardContent>
                 </Card>
@@ -109,7 +132,7 @@ export default function SolverDashboard() {
                                     <div className={`h-2 w-full rounded-t-lg ${activeTab === 'browse' ? 'bg-indigo-500' : 'bg-emerald-500'}`} />
                                     <CardHeader>
                                         <div className="flex justify-between items-start mb-2">
-                                            <CardTitle className="text-lg group-hover:text-primary transition-colors">{p.title}</CardTitle>
+                                            <CardTitle className="text-lg group-hover:text-primary transition-colors dark:text-emerald-500">{p.title}</CardTitle>
                                             {activeTab === 'my' && (
                                                 <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
                                                     {p.status}
@@ -124,7 +147,7 @@ export default function SolverDashboard() {
                                                 <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Budget</p>
                                                 <span className="text-lg font-bold text-foreground">${p.budget}</span>
                                             </div>
-                                            <Button variant="secondary" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <Button variant="secondary" size="sm" className="opacity-100 group-hover:opacity-100 transition-opacity bg-gray-400/10 text-gray-700">
                                                 {activeTab === 'browse' ? 'Apply Now' : 'Manage Work'}
                                             </Button>
                                         </div>

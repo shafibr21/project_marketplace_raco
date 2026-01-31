@@ -20,6 +20,12 @@ interface Project {
     assignedSolverId: { username: string } | null;
 }
 
+interface BuyerStats {
+    totalSpent: number;
+    activeProjects: number;
+    pendingReviews: number;
+}
+
 const MOCK_SPEND_DATA = [
     { month: 'Jan', amount: 1200 },
     { month: 'Feb', amount: 900 },
@@ -32,6 +38,11 @@ const MOCK_SPEND_DATA = [
 export default function BuyerDashboard() {
     const [projects, setProjects] = useState<Project[]>([]);
     const [showCreate, setShowCreate] = useState(false);
+    const [stats, setStats] = useState<BuyerStats>({
+        totalSpent: 0,
+        activeProjects: 0,
+        pendingReviews: 0
+    });
 
     // Create Form
     const [title, setTitle] = useState('');
@@ -40,7 +51,17 @@ export default function BuyerDashboard() {
 
     useEffect(() => {
         fetchProjects();
+        fetchStats();
     }, []);
+
+    const fetchStats = async () => {
+        try {
+            const res = await api.get('/users/buyer/stats');
+            setStats(res.data);
+        } catch (err) {
+            console.error('Failed to fetch stats:', err);
+        }
+    };
 
     const fetchProjects = async () => {
         try {
@@ -61,13 +82,11 @@ export default function BuyerDashboard() {
             setDesc('');
             setBudget('');
             fetchProjects();
+            fetchStats(); // Refresh stats after creating project
         } catch (err) {
             toast.error('Failed to create project');
         }
     };
-
-    const totalSpent = projects.reduce((acc, p) => acc + (p.status === 'completed' ? p.budget : 0), 0);
-    const activeProjects = projects.filter(p => p.status === 'open' || p.status === 'assigned').length;
 
     return (
         <FadeIn>
@@ -115,7 +134,7 @@ export default function BuyerDashboard() {
                         <DollarSign className="w-4 h-4 text-slate-400" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">${totalSpent.toLocaleString()}</div>
+                        <div className="text-2xl font-bold">${stats.totalSpent.toLocaleString()}</div>
                     </CardContent>
                 </Card>
                 <Card>
@@ -124,7 +143,7 @@ export default function BuyerDashboard() {
                         <Layout className="w-4 h-4 text-slate-400" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{activeProjects}</div>
+                        <div className="text-2xl font-bold">{stats.activeProjects}</div>
                     </CardContent>
                 </Card>
                 <Card>
@@ -133,7 +152,7 @@ export default function BuyerDashboard() {
                         <Clock className="w-4 h-4 text-slate-400" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">0</div>
+                        <div className="text-2xl font-bold">{stats.pendingReviews}</div>
                     </CardContent>
                 </Card>
             </div>

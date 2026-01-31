@@ -13,6 +13,11 @@ router.post('/', verifyToken, authorize('buyer'), projectController.createProjec
 // @access  Private
 router.get('/', verifyToken, projectController.getAllProjects);
 
+// @route   GET /api/projects/buyer/my-projects
+// @desc    Get all projects for current buyer
+// @access  Private/Buyer
+router.get('/buyer/my-projects', verifyToken, authorize('buyer'), projectController.getBuyerProjects);
+
 // @route   GET /api/projects/:id
 // @desc    Get project by ID
 // @access  Private
