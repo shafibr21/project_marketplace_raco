@@ -104,7 +104,7 @@ export default function AdminPage() {
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4">
-                            {users.slice(0, 5).map((u) => (
+                            {users.map((u) => (
                                 <div key={u._id} className="flex items-center justify-between p-4 border rounded-xl bg-slate-50/50 hover:bg-slate-50 transition-colors">
                                     <div className="flex items-center gap-3">
                                         <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center font-bold text-slate-600">
