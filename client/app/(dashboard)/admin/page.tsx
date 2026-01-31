@@ -16,18 +16,6 @@ interface User {
     role: string;
 }
 
-// Mock Data for UI Only
-const MOCK_DISPUTES = [
-    { id: 1, project: 'E-commerce Redesign', reporter: 'alex_buyer', reason: 'Late Submission', status: 'In Review' },
-    { id: 2, project: 'Logo Vectorization', reporter: 'creative_solver', reason: 'Payment Pending', status: 'Resolved' },
-];
-
-const MOCK_ACTIVITY = [
-    { id: 1, text: 'New project "Fintech App" created', time: '2 mins ago', icon: Activity, color: 'text-blue-500' },
-    { id: 2, text: 'Solver "dev_jane" reached Level 2', time: '1 hour ago', icon: TrendingUp, color: 'text-green-500' },
-    { id: 3, text: 'Dispute opened for Project #482', time: '3 hours ago', icon: AlertTriangle, color: 'text-red-500' },
-];
-
 export default function AdminPage() {
     const [users, setUsers] = useState<User[]>([]);
     const [stats, setStats] = useState({ users: 0, projects: 0, volume: 0 });
@@ -66,10 +54,6 @@ export default function AdminPage() {
                     <h1 className="text-4xl font-bold tracking-tight text-slate-900">Admin Control Center</h1>
                     <p className="text-slate-500 mt-2">Platform overview, user management, and dispute resolution.</p>
                 </div>
-                <div className="flex gap-2">
-                    <Button variant="outline"><Activity className="w-4 h-4 mr-2" /> System Logs</Button>
-                    <Button><UserCog className="w-4 h-4 mr-2" /> Manage Roles</Button>
-                </div>
             </div>
 
             {/* Stats Grid */}
@@ -82,9 +66,6 @@ export default function AdminPage() {
                         </CardHeader>
                         <CardContent>
                             <div className="text-3xl font-bold">{stats.users}</div>
-                            <p className="text-xs text-slate-400 mt-1 flex items-center">
-                                <ArrowUpRight className="w-3 h-3 text-green-500 mr-1" /> +12% from last month
-                            </p>
                         </CardContent>
                     </Card>
                 </motion.div>
@@ -97,9 +78,6 @@ export default function AdminPage() {
                         </CardHeader>
                         <CardContent>
                             <div className="text-3xl font-bold">{stats.projects}</div>
-                            <p className="text-xs text-slate-400 mt-1 flex items-center">
-                                <ArrowUpRight className="w-3 h-3 text-green-500 mr-1" /> +5 new today
-                            </p>
                         </CardContent>
                     </Card>
                 </motion.div>
@@ -112,15 +90,12 @@ export default function AdminPage() {
                         </CardHeader>
                         <CardContent>
                             <div className="text-3xl font-bold">${stats.volume.toLocaleString()}</div>
-                            <p className="text-xs text-slate-400 mt-1 flex items-center">
-                                <ArrowDownRight className="w-3 h-3 text-red-500 mr-1" /> -2% vs avg
-                            </p>
                         </CardContent>
                     </Card>
                 </motion.div>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7 mb-8">
+            <div className="grid grid-cols-1 mb-8">
                 {/* User Table */}
                 <Card className="col-span-4 shadow-sm">
                     <CardHeader>
@@ -163,58 +138,6 @@ export default function AdminPage() {
                         </div>
                     </CardContent>
                 </Card>
-
-                {/* Disputes & Activity */}
-                <div className="col-span-3 space-y-6">
-                    {/* Disputes Panel */}
-                    <Card className="shadow-sm border-orange-100 bg-orange-50/30">
-                        <CardHeader className="pb-3">
-                            <CardTitle className="text-orange-900 flex items-center gap-2">
-                                <AlertTriangle className="w-5 h-5" /> Recent Disputes
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-3">
-                                {MOCK_DISPUTES.map(d => (
-                                    <div key={d.id} className="bg-white p-3 rounded-lg border shadow-sm text-sm">
-                                        <div className="flex justify-between mb-1">
-                                            <span className="font-semibold">{d.project}</span>
-                                            <span className="text-xs font-medium px-1.5 py-0.5 bg-orange-100 text-orange-700 rounded full">{d.status}</span>
-                                        </div>
-                                        <p className="text-slate-500 text-xs">Reason: {d.reason}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    {/* Activity Feed */}
-                    <Card className="shadow-sm">
-                        <CardHeader className="pb-3">
-                            <CardTitle className="flex items-center gap-2">
-                                <Activity className="w-5 h-5 text-slate-400" /> Platform Activity
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-4 pl-2">
-                                {MOCK_ACTIVITY.map((a, i) => (
-                                    <div key={a.id} className="flex gap-3 relative">
-                                        {i !== MOCK_ACTIVITY.length - 1 && (
-                                            <div className="absolute left-[9px] top-8 bottom-[-16px] w-[1px] bg-slate-200" />
-                                        )}
-                                        <div className={`relative z-10 w-5 h-5 rounded-full flex items-center justify-center bg-white border ${a.color}`}>
-                                            <a.icon className="w-3 h-3" />
-                                        </div>
-                                        <div>
-                                            <p className="text-sm font-medium leading-none">{a.text}</p>
-                                            <p className="text-xs text-slate-400 mt-1">{a.time}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
             </div>
         </FadeIn>
     );

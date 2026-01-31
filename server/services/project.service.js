@@ -63,6 +63,25 @@ const getAllProjects = async (filters, user) => {
 };
 
 /**
+ * Get all projects for a specific buyer
+ * @param {String} buyerId - Buyer user ID
+ * @returns {Promise<Object>} List of buyer's projects
+ */
+const getBuyerProjects = async (buyerId) => {
+    try {
+        const projects = await Project.find({ buyerId })
+            .populate('buyerId', 'username email')
+            .populate('assignedSolverId', 'username email')
+            .sort({ createdAt: -1 });
+
+        return { success: true, data: projects };
+    } catch (error) {
+        console.error('Error in getBuyerProjects service:', error.message);
+        return { success: false, error: error.message };
+    }
+};
+
+/**
  * Get project by ID
  * @param {String} projectId - Project ID
  * @returns {Promise<Object>} Project data
@@ -155,6 +174,7 @@ module.exports = {
     createProject,
     getAllProjects,
     getProjectById,
+    getBuyerProjects,
     assignSolverToProject,
     markProjectCompleted
 };

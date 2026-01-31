@@ -41,6 +41,26 @@ const getAllProjects = async (req, res) => {
 };
 
 /**
+ * @route   GET /api/projects/buyer/my-projects
+ * @desc    Get all projects for current buyer
+ * @access  Private/Buyer
+ */
+const getBuyerProjects = async (req, res) => {
+    try {
+        const result = await projectService.getBuyerProjects(req.user.id);
+
+        if (!result.success) {
+            return res.status(500).json({ message: result.error });
+        }
+
+        res.json(result.data);
+    } catch (error) {
+        console.error('Error in getBuyerProjects controller:', error.message);
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
+/**
  * @route   GET /api/projects/:id
  * @desc    Get project by ID
  * @access  Private
@@ -115,6 +135,7 @@ module.exports = {
     createProject,
     getAllProjects,
     getProjectById,
+    getBuyerProjects,
     assignSolverToProject,
     markProjectCompleted
 };

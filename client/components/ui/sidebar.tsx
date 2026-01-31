@@ -63,7 +63,6 @@ export function Sidebar() {
                     {user.role === 'admin' && (
                         <>
                             <NavItem href="/admin" icon={LayoutDashboard} label="Dashboard" />
-                            <NavItem href="/admin/users" icon={Users} label="User Management" />
                             <NavItem href="/admin/projects" icon={ShieldAlert} label="Projects" />
                         </>
                     )}
@@ -71,16 +70,13 @@ export function Sidebar() {
                     {user.role === 'buyer' && (
                         <>
                             <NavItem href="/buyer" icon={LayoutDashboard} label="Dashboard" />
-                            <NavItem href="/buyer/projects" icon={Briefcase} label="My Projects" />
-                            <NavItem href="/buyer/finance" icon={PieChart} label="Financials" />
+                            <NavItem href="/buyer/project" icon={Briefcase} label="My Projects" />
                         </>
                     )}
 
                     {user.role === 'solver' && (
                         <>
                             <NavItem href="/solver" icon={LayoutDashboard} label="My Dashboard" />
-                            <NavItem href="/solver/marketplace" icon={Briefcase} label="Browse Jobs" />
-                            <NavItem href="/solver/earnings" icon={Wallet} label="Earnings" />
                         </>
                     )}
                 </div>

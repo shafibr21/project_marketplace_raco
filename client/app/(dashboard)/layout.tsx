@@ -23,7 +23,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
     // Apply dark class to wrapper if solver
     return (
-        <div className={`min-h-screen flex ${isSolver ? 'dark bg-black text-white' : 'bg-slate-50 text-slate-900'}`}>
+        <div className="min-h-screen flex bg-slate-50 text-slate-900">
             <Sidebar />
             <main className="flex-1 ml-64 p-8 overflow-y-auto h-screen transition-colors duration-300">
                 <div className="max-w-7xl mx-auto">
